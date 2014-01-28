@@ -16,7 +16,7 @@ import java.util.TreeMap;
  */
 class PatternGenerator {
     private final SortedMap<Character, Long> materials;
-    private int   length;
+    private int   materialCount;
 
     PatternGenerator(String seq) {
         if (seq == null || seq.length() == 0) {
@@ -30,7 +30,7 @@ class PatternGenerator {
             final long count = this.materials.containsKey(c) ? this.materials.get(c) + 1 : 1;
             this.materials.put(c, count);
         }
-        this.length = seq.length();
+        this.materialCount = length;
     }
     
     String next(String seq) throws NoMoreSequenceException {
@@ -78,7 +78,7 @@ class PatternGenerator {
         return rest;
     }
     
-    int getLength() {
-        return this.length;
+    int getMaterialCount() {
+        return this.materialCount;
     }
 }

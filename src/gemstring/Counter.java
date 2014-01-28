@@ -13,7 +13,7 @@ import java.util.concurrent.RecursiveTask;
  *
  * @author hawk
  */
-class Counter extends RecursiveTask <Integer> {
+class Counter extends RecursiveTask <Long> {
     private final String           start;
     private final String           goal;
     private final PatternGenerator gen;
@@ -29,22 +29,21 @@ class Counter extends RecursiveTask <Integer> {
     }
     
     @Override
-    protected Integer compute() {
+    protected Long compute() {
         final String sub = this.getSubSequence(this.start);
         if (sub != null) {
-            System.out.println("'" + this.start + "' => '" + sub + "' => '" + this.goal + "'");
             final Counter first  = new Counter(this.gen, this.start, sub);
             first.fork();
             final Counter second = new Counter(this.gen, sub, this.goal);
             second.fork();
-            final int result = first.join() + second.join();
+            final long result = first.join() + second.join();
             this.printResult(result);
             return result;
         }
         
         String seq = this.start;
         try {
-            for (int i = 1; true; i++) {
+            for (long i = 1; true; i++) {
                 final String next = this.gen.next(seq);
                 if (next.equals(goal)) {
                     this.printResult(i);
@@ -58,12 +57,9 @@ class Counter extends RecursiveTask <Integer> {
     }
     
     private String getSubSequence(String start) {
-        return this.getSubSequence(start, false);
-    }
-    
-    private String getSubSequence(String start, boolean skipped) {
-        final int    length = start.length();
-        if (this.gen.getLength() - 8 < length) {
+        final int length    = start.length();
+        final int threshold = this.gen.getMaterialCount() - 8;
+        if (threshold < length) {
             return null;
         }
         if (length == 0) {
@@ -74,17 +70,16 @@ class Counter extends RecursiveTask <Integer> {
         final int    index  = length - 1;
         final String prefix = start.substring(0, index);
         final char   from   = start.charAt(index);
-        if (index < this.goal.length()) {
-            final char dest = this.goal.charAt(index);
-            while (from < dest) {
-                final char nextGem = (char) (from + 1);
-                if (rest.get(nextGem) == 0) {
-                    continue;
-                }
-                final String candidate = prefix + (char) (from + 1);
-                if (!candidate.equals(this.goal)) {
-                    return candidate;
-                }
+        for (char nextGem = (char) (from + 1); rest.containsKey(nextGem); nextGem = (char) (nextGem + 1)) {
+            if (rest.get(nextGem) == 0) {
+                continue;
+            }
+            
+            final String candidate = prefix + nextGem;
+            if (candidate.compareTo(this.goal) < 0) {
+                return candidate;
+            } else {
+                break;
             }
         }
         
@@ -95,22 +90,23 @@ class Counter extends RecursiveTask <Integer> {
                 continue;
             }
             final String candidate = start + c;
-            if (candidate.equals(this.goal)) {
-                continue;
+            if (0 <= candidate.compareTo(this.goal)) {
+                break;
             }
-            if (0 < candidate.compareTo(this.goal)) {
-                continue;
-            }
-            
-            return skipped ? candidate : this.getSubSequence(candidate, true);
+            return candidate.length() < threshold ? this.getSubSequence(candidate) : candidate;
         }
         
         return null;
     }
     
-    private void printResult(int i) {
+    private void printResult(long i) {
         if (1 < i) {
-            System.out.println("count: " + i + " by '" + this.start + "' => '" + this.goal + "'");
+            System.out.println(this + " RESULT:" + i);
         }
+    }
+    
+    @Override
+    public String toString() {
+        return "['" + this.start + "', '" + this.goal + "']";
     }
 }
