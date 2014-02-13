@@ -119,10 +119,17 @@ class Counter extends RecursiveTask <Long> {
         return null;
     }
     
+    /**
+     * 計算結果を出力します.
+     * @param i 結果のパターン数 (日数)
+     */
     private void printResult(long i) {
         System.out.println(this.start + "," + this.goal + "," + i);
     }
     
+    /**
+     * このオブジェクトの文字列表現です.
+     */
     @Override
     public String toString() {
         return "['" + this.start + "', '" + this.goal + "']";

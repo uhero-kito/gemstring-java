@@ -9,8 +9,16 @@ import java.util.TreeMap;
  * @author hawk_snow
  */
 class PatternGenerator {
+	/**
+	 * 宝石の一覧です.
+	 * キーが宝石の種類 (小文字アルファベット), 値がその宝石の個数となります.
+	 */
     private final SortedMap<Character, Integer> materials;
-    private int   materialCount;
+    
+    /**
+     * 全宝石の個数です. コンストラクタの文字列の長さになります.
+     */
+    private int materialCount;
     
     /**
      * 指定された宝石の一覧を持つ PatternGenerator を構築します.
@@ -94,8 +102,8 @@ class PatternGenerator {
     }
     
     /**
-     * 全部の宝石から, 指定されたパターンの宝石を除くと, あと何がいくつ残るかを数えます.
-     * @param seq
+     * 全部の宝石から, 指定されたパターンの宝石を除いた結果, どの種類がいくつ残るかを数えます.
+     * @param seq パターン
      * @return 残りの宝石 (キーが宝石の種類, 値がその宝石の個数)
      */
     SortedMap<Character, Integer> getRest(String seq) {

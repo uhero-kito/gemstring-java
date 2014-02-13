@@ -9,8 +9,8 @@ import java.util.concurrent.ForkJoinPool;
 public class CounterTest {
 	/**
 	 * gemstring の問題を計算します.
-	 * 1 番目の引数に宝石の種類の一覧,
-	 * 2 番目の引数に目的のパターンを指定します.
+	 * 1 番目の引数に宝石の種類の一覧 ("abbbbcddddeefggg" など),
+	 * 2 番目の引数に目的のパターン ("eagcdfbe" など) を指定します.
 	 * 
 	 * @param args
 	 */
