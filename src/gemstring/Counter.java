@@ -86,7 +86,7 @@ class Counter extends RecursiveTask <Long> {
             return this.goal.equals("a") ? null : "a";
         }
         
-        final Map<Character, Long> rest = this.gen.getRest(start);
+        final Map<Character, Integer> rest = this.gen.getRest(start);
         final int    index  = length - 1;
         final String prefix = start.substring(0, index);
         final char   from   = start.charAt(index);
@@ -103,7 +103,7 @@ class Counter extends RecursiveTask <Long> {
             }
         }
         
-        for (Map.Entry<Character, Long> entry : rest.entrySet()) {
+        for (Map.Entry<Character, Integer> entry : rest.entrySet()) {
             char c     = entry.getKey();
             long count = entry.getValue();
             if (count == 0) {

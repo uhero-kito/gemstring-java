@@ -9,7 +9,7 @@ import java.util.TreeMap;
  * @author hawk_snow
  */
 class PatternGenerator {
-    private final SortedMap<Character, Long> materials;
+    private final SortedMap<Character, Integer> materials;
     private int   materialCount;
     
     /**
@@ -24,8 +24,8 @@ class PatternGenerator {
         this.materials = new TreeMap<>();
         final int length = seq.length();
         for (int i = 0; i < length; i++) {
-            final char c     = seq.charAt(i);
-            final long count = this.materials.containsKey(c) ? this.materials.get(c) + 1 : 1;
+            final char c    = seq.charAt(i);
+            final int count = this.materials.containsKey(c) ? this.materials.get(c) + 1 : 1;
             this.materials.put(c, count);
         }
         this.materialCount = length;
@@ -55,10 +55,10 @@ class PatternGenerator {
      * @throws NoMoreSequenceException
      */
     private String next(String seq, char pass) throws NoMoreSequenceException {
-        final SortedMap<Character, Long> rest = this.getRest(seq);
-        for (Map.Entry<Character, Long> e : rest.entrySet()) {
+        final SortedMap<Character, Integer> rest = this.getRest(seq);
+        for (Map.Entry<Character, Integer> e : rest.entrySet()) {
             final char c = e.getKey();
-            final long count = e.getValue();
+            final int count = e.getValue();
             if (pass < c && 0 < count) {
                 return seq + c;
             }
@@ -98,12 +98,12 @@ class PatternGenerator {
      * @param seq
      * @return 残りの宝石 (キーが宝石の種類, 値がその宝石の個数)
      */
-    SortedMap<Character, Long> getRest(String seq) {
-        final SortedMap<Character, Long> rest = new TreeMap<>(this.materials);
+    SortedMap<Character, Integer> getRest(String seq) {
+        final SortedMap<Character, Integer> rest = new TreeMap<>(this.materials);
         final int length = seq.length();
         for (int i = 0; i < length; i++) {
             final char c = seq.charAt(i);
-            final Long count = rest.get(c);
+            final Integer count = rest.get(c);
             if (count == null || count == 0) {
                 throw new IllegalArgumentException("Invalid sequence: " + seq);
             }
