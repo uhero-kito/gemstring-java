@@ -1,17 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gemstring;
 
 import java.util.Map;
 import java.util.concurrent.RecursiveTask;
 
 /**
- *
- * @author hawk
+ * とあるパターンから, 別のパターンに至るまでに何パターン存在するかを数えるクラスです.
+ * @author hawk_snow
  */
 class Counter extends RecursiveTask <Long> {
     private static final int NO_FORK_COUNT = 10;
@@ -19,16 +13,35 @@ class Counter extends RecursiveTask <Long> {
     private final String           goal;
     private final PatternGenerator gen;
     
+    /**
+     * ゴールを指定して Counter をインスタンス化します.
+     * @param gen
+     * @param goal
+     */
     Counter(PatternGenerator gen, String goal) {
         this(gen, "", goal);
     }
     
+    /**
+     * スタートとゴールを指定して Counter をインスタンス化します.
+     * @param gen
+     * @param start
+     * @param goal
+     */
     Counter(PatternGenerator gen, String start, String goal) {
         this.gen   = gen;
         this.start = start;
         this.goal  = goal;
     }
     
+    /**
+     * スタートからゴールに至るまでのパターン数 (日数) を計算します.
+     * スタートとゴールの間が遠い場合は中間地点を設定し,
+     * 「スタート → 中間地点」と「中間地点 → ゴール」に分割してその結果の合計を返します.
+     * スタートとゴールが近い場合は普通に計算します.
+     * 
+     * @return パターン数
+     */
     @Override
     protected Long compute() {
         final String sub = this.getSubSequence(this.start);
@@ -57,6 +70,12 @@ class Counter extends RecursiveTask <Long> {
         }
     }
     
+    /**
+     * 分割統治法で計算するにあたり, スタートとゴールの間の中間地点となるパターンを算出します.
+     * 分割して計算する必要がない (計算量が小さい) 場合は null を返します.
+     * @param start スタート地点
+     * @return 中間地点のパターン. 分割する必要がない場合は null
+     */
     private String getSubSequence(String start) {
         final int length    = start.length();
         final int threshold = this.gen.getMaterialCount() - NO_FORK_COUNT;

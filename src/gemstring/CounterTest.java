@@ -1,18 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package gemstring;
 
 import java.util.concurrent.ForkJoinPool;
 
 /**
- *
- * @author hawk
+ * gemstring の実行クラスです.
+ * @author hawk_snow
  */
 public class CounterTest {
+	/**
+	 * gemstring の問題を計算します.
+	 * 1 番目の引数に宝石の種類の一覧,
+	 * 2 番目の引数に目的のパターンを指定します.
+	 * 
+	 * @param args
+	 */
     public static void main(String[] args) {
         if (args.length < 2) {
             System.out.println("Usage: CounterTest gems target");
