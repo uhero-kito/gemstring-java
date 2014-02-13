@@ -9,10 +9,10 @@ import java.util.TreeMap;
  * @author hawk_snow
  */
 class PatternGenerator {
-	/**
-	 * 宝石の一覧です.
-	 * キーが宝石の種類 (小文字アルファベット), 値がその宝石の個数となります.
-	 */
+    /**
+     * 宝石の一覧です.
+     * キーが宝石の種類 (小文字アルファベット), 値がその宝石の個数となります.
+     */
     private final SortedMap<Character, Integer> materials;
     
     /**
