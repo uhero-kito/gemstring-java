@@ -14,6 +14,7 @@ import java.util.concurrent.RecursiveTask;
  * @author hawk
  */
 class Counter extends RecursiveTask <Long> {
+    private static final int NO_FORK_COUNT = 10;
     private final String           start;
     private final String           goal;
     private final PatternGenerator gen;
@@ -58,7 +59,7 @@ class Counter extends RecursiveTask <Long> {
     
     private String getSubSequence(String start) {
         final int length    = start.length();
-        final int threshold = this.gen.getMaterialCount() - 8;
+        final int threshold = this.gen.getMaterialCount() - NO_FORK_COUNT;
         if (threshold < length) {
             return null;
         }
@@ -93,16 +94,14 @@ class Counter extends RecursiveTask <Long> {
             if (0 <= candidate.compareTo(this.goal)) {
                 break;
             }
-            return candidate.length() < threshold ? this.getSubSequence(candidate) : candidate;
+            return this.getSubSequence(candidate);
         }
         
         return null;
     }
     
     private void printResult(long i) {
-        if (1 < i) {
-            System.out.println(this + " RESULT:" + i);
-        }
+        System.out.println(this.start + "," + this.goal + "," + i);
     }
     
     @Override
