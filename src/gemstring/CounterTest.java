@@ -20,10 +20,11 @@ public class CounterTest {
             return;
         }
         
-        System.out.println("gems   : " + args[0]);
-        System.out.println("target : " + args[1]);
+        final String gems   = args[0];
         final String target = args[1];
-        final Counter c = new Counter(new PatternGenerator(args[0]), target);
+        System.out.println("gems   : " + gems);
+        System.out.println("target : " + target);
+        final Counter c = new Counter(new PatternGenerator(gems), target);
         final ForkJoinPool pool = new ForkJoinPool(32);
         final long t1 = System.nanoTime();
         System.out.println(pool.invoke(c) + ":" + target);
